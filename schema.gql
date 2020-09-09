@@ -1,0 +1,55 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: String!
+  name: String!
+  email: String!
+  password: String!
+  phone: String!
+  description: String!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  date: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Book {
+  id: ID!
+  title: String!
+  author: String!
+  category: Category!
+}
+
+type Query {
+  author: [User!]!
+  getCategories: [Category!]!
+  getBook(bookId: String!): Book!
+}
+
+type Mutation {
+  register(userInput: CreateUserArgs!): User!
+  login(password: String!, email: String!): String!
+  createCategory(name: String!): Category!
+  createBook(book: CreateBookDto!): Book!
+}
+
+input CreateUserArgs {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input CreateBookDto {
+  title: String!
+  author: String!
+  category: String!
+}
