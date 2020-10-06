@@ -14,7 +14,7 @@ import * as jwt from 'jsonwebtoken';
 export class AuthGuard implements CanActivate {
   constructor(private userService: UserService) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context).getContext();
     const jwtToken = ctx.req.cookies.jwt;
     if (!jwtToken) {
@@ -23,7 +23,8 @@ export class AuthGuard implements CanActivate {
 
     try {
       const key = this.userService.secretKey;
-      jwt.verify(jwtToken, key);
+      const userId = jwt.verify(jwtToken, key);
+      ctx.userId = userId;
       return true;
     } catch (error) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);

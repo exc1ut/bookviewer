@@ -5,17 +5,5 @@ import { IsNotEmpty, MinLength } from 'class-validator';
 export class CreateBookDto {
   @Field()
   @MinLength(3)
-  title: string;
-
-  @Field()
-  @MinLength(3)
-  author: string;
-
-  @Field()
-  @IsNotEmpty()
-  category: string;
-
-  @Field()
-  @MinLength(3)
-  description: string;
+  body: string;
 }

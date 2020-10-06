@@ -10,7 +10,7 @@ export class Category extends Document {
 
   @Field()
   @Prop()
-  name: string;
+  name?: string;
 
   @Field()
   @Prop({ default: Date.now() })
