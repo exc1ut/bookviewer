@@ -1,72 +1,91 @@
-import { User } from './../schemas/user.schema';
-import { UserService } from './../user/user.service';
-import { ContextInterface } from './../interfaces/ContextInterface';
-import { AuthGuard } from './../auth/graphql.auth';
 import { CreateBookDto } from './dto/createBook.dto';
-import { Book } from './../schemas/book.schema';
+import { Book } from '../entities/book.entity';
 import { BookService } from './book.service';
 import {
   Resolver,
   Mutation,
   Args,
   Query,
-  Context,
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { Comment } from 'src/schemas/comment.schema';
+import { Progress } from 'src/entities/progress.entity';
+import { CurrentUser, GqlAuthGuard } from 'src/auth/gql.authguard';
+import { User } from 'src/entities/user.entity';
 
 @Resolver(() => Book)
 export class BookResolver {
-  constructor(
-    private bookService: BookService,
-    private userService: UserService,
-  ) {}
+  constructor(private bookService: BookService) {}
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => Book)
   async createBook(@Args('book') bookDto: CreateBookDto) {
     const book = this.bookService.createBook(bookDto);
     return book;
   }
 
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Book)
+  async addComment(
+    @Args('bookId') id: number,
+    @Args('body') body: string,
+    @CurrentUser() user: User,
+  ) {
+    return await this.bookService.addComment(id, body, user.id);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Book)
+  async setRating(
+    @Args('bookId') id: number,
+    @Args('rating') rating: number,
+    @CurrentUser() user: User,
+  ) {
+    return await this.bookService.setRating(id, rating, user.id);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Book)
+  async setProgress(
+    @Args('bookId') id: number,
+    @Args('progress') progress: number,
+    @CurrentUser() user: User,
+  ) {
+    return await this.bookService.setProgress(id, progress, user.id);
+  }
+
+  @UseGuards(GqlAuthGuard)
   @Query(() => Book)
-  async getBook(@Args('bookId') id: string) {
+  async getBook(@Args('bookId') id: number) {
     return await this.bookService.getBook(id);
   }
 
-  @UseGuards(AuthGuard)
-  @Mutation(() => Book)
-  async addComment(
-    @Args('bookId') id: string,
-    @Args('body') body: string,
-    @Context() ctx: ContextInterface,
-  ) {
-    const userId = ctx.userId;
-
-    return await this.bookService.addComment(id, body, userId);
+  @ResolveField(() => Progress)
+  async progress(
+    @Parent() book: Book,
+    @CurrentUser() user: User,
+  ): Promise<Progress> {
+    const { id } = book;
+    const prog = await this.bookService.getProgress(id, user.id);
+    return prog;
   }
 
-  @UseGuards(AuthGuard)
-  @Mutation(() => Book)
-  async addRating(
-    @Args('bookId') id: string,
-    @Args('rating') rating: number,
-    @Context() ctx: ContextInterface,
-  ) {
-    const userId = ctx.userId;
-    return await this.bookService.addRating(id, rating, userId);
+  @ResolveField()
+  async rating(
+    @Parent() book: Book,
+    @CurrentUser() user: User,
+  ): Promise<number> {
+    const { id } = book;
+    const avg = await this.bookService.getAvgRating(id, user.id);
+    return avg;
   }
 
-  @UseGuards(AuthGuard)
-  @Mutation(() => Book)
-  async setProgress(
-    @Args('bookId') id: string,
-    @Args('progress') progress: number,
-    @Context() ctx: ContextInterface,
-  ) {
-    const userId = ctx.userId;
-    return await this.bookService.setProgress(id, progress, userId);
+  @ResolveField()
+  async comments(@Parent() book: Book) {
+    const { id } = book;
+    const comments = await this.bookService.getComments(id);
+    return comments;
   }
 
   // @UseGuards(AuthGuard)

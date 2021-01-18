@@ -13,7 +13,7 @@ export class CreateBookDto {
 
   @Field()
   @IsNotEmpty()
-  category: string;
+  category: number;
 
   @Field()
   @MinLength(3)

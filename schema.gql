@@ -2,43 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: ID!
-  name: String!
-  email: String!
-  password: String!
-  phone: String!
-  description: String!
-}
-
 type Category {
   id: ID!
   name: String!
-  date: DateTime!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type Comment {
-  _id: ID
-  commentUser: User!
-  date: DateTime!
-  body: String!
-  likes: Float!
-  dislikes: Float!
-}
-
-type Rating {
-  id: String!
-  rate: Float!
+  date: String!
 }
 
 type Progress {
-  id: String!
-  progress: Float!
+  id: Float!
+  progres: Float!
+  bookID: Float!
+  user_id: User!
 }
 
 type Book {
@@ -46,17 +20,46 @@ type Book {
   title: String!
   author: String!
   views: Float!
-  rating: [Rating!]!
+  rating: Float
   description: String!
-  progress: [Progress!]!
+  progress: Progress
   comments: [Comment!]!
   category: Category!
+}
+
+type Comment {
+  id: ID
+  user: User!
+  book: Book!
+  date: String!
+  body: String!
+  likes: Float!
+  dislikes: Float!
+}
+
+type Rating {
+  id: Float!
+  rate: Float!
+  bookID: Float!
+  user: User!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  phone: String!
+  description: String!
+  progresses: [Progress!]!
+  ratings: [Rating!]!
+  comments: [Comment!]!
 }
 
 type Query {
   author: [User!]!
   getCategories: [Category!]!
-  getBook(bookId: String!): Book!
+  getBook(bookId: Float!): Book!
 }
 
 type Mutation {
@@ -64,15 +67,17 @@ type Mutation {
   login(loginInput: LoginUserDto!): String!
   createCategory(name: String!): Category!
   createBook(book: CreateBookDto!): Book!
-  addComment(body: String!, bookId: String!): Book!
-  addRating(rating: Float!, bookId: String!): Book!
-  setProgress(progress: Float!, bookId: String!): Book!
+  addComment(body: String!, bookId: Float!): Book!
+  setRating(rating: Float!, bookId: Float!): Book!
+  setProgress(progress: Float!, bookId: Float!): Book!
 }
 
 input CreateUserDto {
   name: String!
   email: String!
   password: String!
+  phone: String!
+  description: String!
 }
 
 input LoginUserDto {
@@ -83,6 +88,6 @@ input LoginUserDto {
 input CreateBookDto {
   title: String!
   author: String!
-  category: String!
+  category: Float!
   description: String!
 }

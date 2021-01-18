@@ -14,4 +14,12 @@ export class CreateUserDto {
   @MinLength(3)
   @Field()
   password: string;
+
+  @MinLength(3)
+  @Field()
+  phone: string;
+
+  @MinLength(3)
+  @Field()
+  description: string;
 }
