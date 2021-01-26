@@ -15,5 +15,5 @@ $ yarn
 $ yarn start
 
 # watch mode
-$ npm dev
+$ yarn dev
 ```
