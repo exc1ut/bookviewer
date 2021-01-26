@@ -12,6 +12,7 @@ import { Comment } from './entities/comment.entity';
 import { Progress } from './entities/progress.entity';
 import { Rating } from './entities/rating.entity';
 import { User } from './entities/user.entity';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { User } from './entities/user.entity';
     BookModule,
     AuthModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {

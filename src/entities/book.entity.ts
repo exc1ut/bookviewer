@@ -1,4 +1,3 @@
-import { Field, ObjectType, ID } from '@nestjs/graphql';
 import {
   BaseEntity,
   Column,
@@ -7,6 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Category } from './category.entity';
 import { Comment } from './comment.entity';
 import { Progress } from './progress.entity';

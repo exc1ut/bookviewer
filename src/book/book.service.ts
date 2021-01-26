@@ -3,7 +3,6 @@ import { CreateBookDto } from './dto/createBook.dto';
 import { Book } from '../entities/book.entity';
 import { Rating } from '../entities/rating.entity';
 import { Injectable } from '@nestjs/common';
-import * as _ from 'lodash';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from 'src/entities/comment.entity';

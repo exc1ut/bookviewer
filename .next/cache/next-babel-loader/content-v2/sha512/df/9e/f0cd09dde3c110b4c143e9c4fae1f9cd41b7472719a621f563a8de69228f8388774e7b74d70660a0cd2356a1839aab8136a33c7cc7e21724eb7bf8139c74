@@ -1,0 +1,1 @@
+{"ast":null,"code":"export default function () {\n  return 'Hello';\n}","map":{"version":3,"sources":["D:/My files/My projects/book/server/src/pages/index.tsx"],"names":[],"mappings":"AAAA,eAAe,YAAW;AACxB,SAAO,OAAP;AACD","sourcesContent":["export default function() {\r\n  return 'Hello';\r\n}\r\n"]},"metadata":{},"sourceType":"module"}

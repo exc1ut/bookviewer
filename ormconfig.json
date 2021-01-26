@@ -6,7 +6,7 @@
     "password": "postgres",
     "database": "book",
     "entities": [
-        "dist/**/*.entity{.ts,.js}"
+        "src/**/*.entity{.ts,.js}"
     ],
     "synchronize": true,
     "logging": true
